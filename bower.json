@@ -1,0 +1,24 @@
+{
+  "name": "angular-feincms",
+  "version": "1.0.0",
+  "homepage": "https://github.com/incuna/angular-feincms",
+  "authors": [
+    "Perry Roper <perryroper@gmail.com>"
+  ],
+  "keywords": [
+    "angularjs",
+    "feincms",
+    "django"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "djangular-rest-framework": "~1.0.1"
+  }
+}
