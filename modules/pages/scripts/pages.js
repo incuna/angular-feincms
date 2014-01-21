@@ -2,13 +2,39 @@
     'use strict';
 
     var pages = angular.module('feincms.pages', [
+        'ngRoute',
         'project_settings',
         'djangularRestFramework'
     ]);
 
     pages.constant('FEINCMS_PAGES', {
-        ENDPOINT: '/pages'
+        // API endpoint
+        ENDPOINT: '/pages',
+        // Angular route
+        PAGES: '/pages/'
     });
+
+    pages.config(['$routeProvider', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($routeProvider, FEINCMS_PAGES, PROJECT_SETTINGS) {
+        var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
+
+        $routeProvider
+            .when(MODULE_SETTINGS.PAGES + ':id/', {
+                templateUrl: 'templates/feincms/pages/detail.html',
+                controller: 'PagesDetailCtrl'
+            });
+    }]);
+
+    pages.controller('PagesDetailCtrl', ['$scope', '$routeParams', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($scope, $routeParams, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
+        var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
+
+        var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.ENDPOINT;
+        url = url + '/' + $routeParams.id;
+
+        drf.loadItem(url)
+            .then(function (response) {
+                $scope.response = response;
+            });
+    }]);
 
     pages.directive('feincmsPageRegion', ['$location', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($location, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
         var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
@@ -52,6 +78,9 @@
     }]);
 
     pages.run(['$templateCache', function ($templateCache) {
+        $templateCache.put('templates/feincms/pages/detail.html',
+            '<div>{{ response|json }}</div>'
+        );
         $templateCache.put('templates/feincms/pages/region.html',
             '<div ng-bind-html=content></div>'
         );
