@@ -19,6 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "djangular-rest-framework": "~1.0.1"
+    "angular-route": "1.2.7",
+    "djangular-rest-framework": "1.0.1"
   }
 }
