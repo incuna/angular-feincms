@@ -8,7 +8,9 @@
     ]);
 
     pages.constant('FEINCMS_PAGES', {
+        // API endpoint
         ENDPOINT: '/pages',
+        // Angular route
         PAGES: '/pages/'
     });
 
