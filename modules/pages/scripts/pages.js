@@ -19,10 +19,10 @@
             templateUrl: 'templates/feincms/pages/region.html',
             link: function (scope, element, attrs) {
                 var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.ENDPOINT;
-                if(attrs.pageId) {
-                    url = url + '/' + attrs.pageId;
-                }
+
                 if (attrs.pageId) {
+                    url = url + '/' + attrs.pageId;
+
                     drf.loadItem(url)
                         .then(function (response) {
                             scope.content = response.regions[attrs.region];
