@@ -10,7 +10,6 @@
     pages.constant('FEINCMS_PAGES', {
         // API endpoints
         PAGES_ENDPOINT: '/pages',
-        PAGE_GROUPS_ENDPOINT: '/pagegroup',
         // Angular routes
         PAGES: '/pages/'
     });
