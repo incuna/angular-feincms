@@ -8,9 +8,10 @@
     ]);
 
     pages.constant('FEINCMS_PAGES', {
-        // API endpoint
-        ENDPOINT: '/pages',
-        // Angular route
+        // API endpoints
+        PAGES_ENDPOINT: '/pages',
+        PAGE_GROUPS_ENDPOINT: '/pagegroup',
+        // Angular routes
         PAGES: '/pages/'
     });
 
@@ -27,7 +28,7 @@
     pages.controller('PagesDetailCtrl', ['$scope', '$routeParams', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($scope, $routeParams, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
         var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
 
-        var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.ENDPOINT;
+        var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
         url = url + '/' + $routeParams.id;
 
         drf.loadItem(url)
@@ -44,7 +45,7 @@
             replace: true,
             templateUrl: 'templates/feincms/pages/region.html',
             link: function (scope, element, attrs) {
-                var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.ENDPOINT;
+                var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
 
                 if (attrs.pageId) {
                     url = url + '/' + attrs.pageId;
