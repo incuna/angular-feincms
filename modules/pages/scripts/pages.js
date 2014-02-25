@@ -8,9 +8,9 @@
     ]);
 
     pages.constant('FEINCMS_PAGES', {
-        // API endpoint
-        ENDPOINT: '/pages',
-        // Angular route
+        // API endpoints
+        PAGES_ENDPOINT: '/pages',
+        // Angular routes
         PAGES: '/pages/'
     });
 
@@ -27,13 +27,27 @@
     pages.controller('PagesDetailCtrl', ['$scope', '$routeParams', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($scope, $routeParams, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
         var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
 
-        var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.ENDPOINT;
+        var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
         url = url + '/' + $routeParams.id;
 
         drf.loadItem(url)
             .then(function (response) {
                 $scope.response = response;
             });
+    }]);
+
+    pages.directive('pageGroup', ['drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function (drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
+        var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                drf.loadList(PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT + '?group=' + encodeURI(attrs.pageGroup))
+                    .then(function (response) {
+                        scope.pages = response;
+                    });
+            }
+        };
     }]);
 
     pages.directive('feincmsPageRegion', ['$location', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($location, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
@@ -44,7 +58,7 @@
             replace: true,
             templateUrl: 'templates/feincms/pages/region.html',
             link: function (scope, element, attrs) {
-                var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.ENDPOINT;
+                var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
 
                 if (attrs.pageId) {
                     url = url + '/' + attrs.pageId;

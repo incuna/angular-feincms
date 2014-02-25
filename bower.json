@@ -1,6 +1,6 @@
 {
   "name": "angular-feincms",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "homepage": "https://github.com/incuna/angular-feincms",
   "authors": [
     "Perry Roper <perryroper@gmail.com>"
@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-route": "1.2.7",
-    "djangular-rest-framework": "1.0.2"
+    "angular-route": "~1.2.9",
+    "djangular-rest-framework": "~1.2.1"
   }
 }
