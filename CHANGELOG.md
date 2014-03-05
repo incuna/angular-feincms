@@ -1,3 +1,9 @@
+# 1.3.0
+
+* Now uses page slugs rather than IDs.
+* If you were reversing URL's bg ID you will need to update that to:
+  `|reverseUrl:{slug: page.slug} }}`
+
 # 1.2.0
 
 * Renamed pages API endpoint.
