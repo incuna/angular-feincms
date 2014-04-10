@@ -55,21 +55,42 @@
 
         return {
             restrict: 'A',
+            scope: {
+                region: '@',
+                pageId: '@'
+            },            
             replace: true,
             templateUrl: 'templates/feincms/pages/region.html',
             link: function (scope, element, attrs) {
                 var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
 
-                var slug = $location.$$path;
-                // Remove the first and last / from the path.
-                slug = slug.replace(/^\/+|\/+$/g, '');
+                if (scope.pageId) {
+                    url = url + '/' + scope.pageId;
 
-                url = url + '/' + slug;
+                    drf.loadItem(url)
+                        .then(function (response) {
+                            scope.content = response.regions[scope.region];
+                        });
+                } else {
+                    // If there isn't a page id to load, then use the page slug
+                    // to render the appropriate content.
+                    var slug = $location.$$path;
+                    // Remove the first and last / from the path.
+                    slug = slug.replace(/^\/+|\/+$/g, '');
 
-                drf.loadItem(url)
-                    .then(function (response) {
-                        scope.content = page.regions[attrs.region];
-                    });
+                    // Get the list of pages
+                    drf.loadList(url)
+                        .then(function (response) {
+                            // Find the page by slug in the list
+                            angular.forEach(response, function (page) {
+                                if (page.slug === slug) {
+                                    scope.content = page.regions[scope.region];
+                                    return;
+                                }
+                            });
+                        });
+                }
+
             }
         };
     }]);
