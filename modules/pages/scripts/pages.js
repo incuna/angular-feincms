@@ -55,6 +55,9 @@
 
         return {
             restrict: 'A',
+            scope: {
+                region: '@'
+            },            
             replace: true,
             templateUrl: 'templates/feincms/pages/region.html',
             link: function (scope, element, attrs) {
@@ -68,7 +71,7 @@
 
                 drf.loadItem(url)
                     .then(function (response) {
-                        scope.content = page.regions[attrs.region];
+                        scope.content = page.regions[scope.region];
                     });
             }
         };
