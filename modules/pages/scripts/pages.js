@@ -57,7 +57,7 @@
             restrict: 'A',
             scope: {
                 region: '@'
-            },            
+            },
             replace: true,
             templateUrl: 'templates/feincms/pages/region.html',
             link: function (scope, element, attrs) {
