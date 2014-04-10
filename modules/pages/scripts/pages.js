@@ -71,7 +71,7 @@
 
                 drf.loadItem(url)
                     .then(function (response) {
-                        scope.content = page.regions[scope.region];
+                        scope.content = response.regions[scope.region];
                     });
             }
         };
