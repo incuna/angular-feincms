@@ -1,7 +1,11 @@
+# 1.3.3
+
+* Improve dependency matching in `bower.json` to reduce conflicts.
+
 # 1.3.2
 
 * Fix broken region directive
- 
+
 # 1.3.1
 
 * Fix duplicate output issue when multiple directives with different regions used in same template
