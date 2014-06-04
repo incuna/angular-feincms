@@ -1,3 +1,7 @@
+# 1.4.0
+
+* Add optional `slug` attribute to feincmsPageRegion directive.
+
 # 1.3.3
 
 * Improve dependency matching in `bower.json` to reduce conflicts.
