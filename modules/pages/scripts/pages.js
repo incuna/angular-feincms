@@ -56,18 +56,21 @@
         return {
             restrict: 'A',
             scope: {
-                region: '@'
+                region: '@',
+                slug: '@'
             },
             replace: true,
             templateUrl: 'templates/feincms/pages/region.html',
             link: function (scope, element, attrs) {
                 var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
 
-                var slug = $location.$$path;
-                // Remove the first and last / from the path.
-                slug = slug.replace(/^\/+|\/+$/g, '');
+                if (angular.isUndefined(scope.slug)) {
+                    scope.slug = $location.$$path;
+                    // Remove the first and last / from the path.
+                    scope.slug = scope.slug.replace(/^\/+|\/+$/g, '');
+                }
 
-                url = url + '/' + slug;
+                url = url + '/' + scope.slug;
 
                 drf.loadItem(url)
                     .then(function (response) {
