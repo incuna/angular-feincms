@@ -24,7 +24,7 @@
             });
     }]);
 
-    pages.controller('PagesDetailCtrl', ['$scope', '$routeParams', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($scope, $routeParams, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
+    pages.controller('PagesDetailCtrl', ['$sce', '$scope', '$routeParams', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($sce, $scope, $routeParams, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
         var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
 
         var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
@@ -32,8 +32,12 @@
 
         drf.loadItem(url)
             .then(function (response) {
+                angular.forEach(response.regions, function(value, key){
+                    response.regions[key] = $sce.trustAsHtml(value)
+                });
                 $scope.response = response;
             });
+
     }]);
 
     pages.directive('pageGroup', ['drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function (drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
@@ -50,7 +54,7 @@
         };
     }]);
 
-    pages.directive('feincmsPageRegion', ['$location', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($location, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
+    pages.directive('feincmsPageRegion', ['$sce', '$location', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($sce, $location, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
         var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
 
         return {
@@ -74,7 +78,7 @@
 
                 drf.loadItem(url)
                     .then(function (response) {
-                        scope.content = response.regions[scope.region];
+                        scope.content = $sce.trustAsHtml(response.regions[scope.region]);
                     });
             }
         };
