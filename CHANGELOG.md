@@ -1,3 +1,7 @@
+# 1.4.1
+
+* Amends pageGroup and the feincmsPageRegion directives to return their original result as angular trusted HTML (`$sce.trustAsHtml()`).
+
 # 1.4.0
 
 * Add optional `slug` attribute to feincmsPageRegion directive.
