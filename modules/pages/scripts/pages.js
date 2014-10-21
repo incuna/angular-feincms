@@ -24,21 +24,36 @@
             });
     }]);
 
-    pages.controller('PagesDetailCtrl', ['$sce', '$scope', '$routeParams', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($sce, $scope, $routeParams, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
-        var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
+    pages.factory('loadPage', [
+        '$sce', '$q', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS',
+        function ($sce, $q, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
+            var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
+            var urlBase = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
+            return function (slug) {
+                var url = urlBase + '/' + slug;
+                var deferred = $q.defer();
+                drf.loadItem(url)
+                    .then(function (response) {
+                        angular.forEach(response.regions, function(value, key){
+                            response.regions[key] = $sce.trustAsHtml(value);
+                        });
+                        deferred.resolve(response);
+                    },
+                    deferred.reject);
 
-        var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
-        url = url + '/' + $routeParams.slug;
+                return deferred.promise;
+            };
+        }
+    ]);
 
-        drf.loadItem(url)
-            .then(function (response) {
-                angular.forEach(response.regions, function(value, key){
-                    response.regions[key] = $sce.trustAsHtml(value)
-                });
+    pages.controller('PagesDetailCtrl', [
+        '$scope', '$routeParams', 'loadPage',
+        function ($scope, $routeParams, loadPage) {
+            loadPage($routeParams.slug).then(function (response) {
                 $scope.response = response;
             });
-
-    }]);
+        }
+    ]);
 
     pages.directive('pageGroup', ['drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function (drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
         var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
@@ -54,9 +69,25 @@
         };
     }]);
 
-    pages.directive('feincmsPageRegion', ['$sce', '$location', 'drf', 'FEINCMS_PAGES', 'PROJECT_SETTINGS', function ($sce, $location, drf, FEINCMS_PAGES, PROJECT_SETTINGS) {
-        var MODULE_SETTINGS = angular.extend({}, FEINCMS_PAGES, PROJECT_SETTINGS.FEINCMS_PAGES);
+    pages.directive('feincmsPage', ['loadPage', function (loadPage) {
+        return {
+            restrict: 'A',
+            scope: false,
+            link: function (scope, element, attrs) {
+                scope.$watch(attrs.feincmsPage, function (field) {
+                    var slug = scope.$eval(attrs.feincmsPage);
+                    if (angular.isDefined(slug)) {
+                        loadPage(slug).then(function (response) {
+                            scope.page = response;
+                        });
+                    }
+                });
+            }
+        };
+        
+    }]);
 
+    pages.directive('feincmsPageRegion', ['$location', 'loadPage', function ($location, loadPage) {
         return {
             restrict: 'A',
             scope: {
@@ -66,20 +97,14 @@
             replace: true,
             templateUrl: 'templates/feincms/pages/region.html',
             link: function (scope, element, attrs) {
-                var url = PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PAGES_ENDPOINT;
-
                 if (angular.isUndefined(scope.slug)) {
                     scope.slug = $location.$$path;
                     // Remove the first and last / from the path.
                     scope.slug = scope.slug.replace(/^\/+|\/+$/g, '');
                 }
-
-                url = url + '/' + scope.slug;
-
-                drf.loadItem(url)
-                    .then(function (response) {
-                        scope.content = $sce.trustAsHtml(response.regions[scope.region]);
-                    });
+                loadPage(scope.slug).then(function (response) {
+                    scope.content = response.regions[scope.region];
+                });
             }
         };
     }]);
