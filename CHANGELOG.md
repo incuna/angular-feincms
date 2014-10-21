@@ -1,3 +1,8 @@
+# 1.4.2
+
+* Add loadPage factory to load the page from the api
+* Add feincmsPage directive to load a page and add it to the scope.
+
 # 1.4.1
 
 * Amends pageGroup and the feincmsPageRegion directives to return their original result as angular trusted HTML (`$sce.trustAsHtml()`).
