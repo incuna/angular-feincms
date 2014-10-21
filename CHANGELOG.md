@@ -1,3 +1,19 @@
+# 2.0.0
+
+* Remove feincmsPageRegion directive. Use feincmsPage to load all page data in a single request.
+  To upgrade replace all `feincms-page-region` directives with `feincms-page` directive:
+     ```
+        <div feincms-page-region slug="injection-tracker" region="main"></div>
+        <div feincms-page-region slug="injection-tracker" region="sidebar"></div>
+     ```
+  becomes 
+     ```
+        <div feincms-page="injection-tracker" >
+            <div bind-html-compile="page.regions.main"></div>
+            <div bind-html-compile="page.regions.sidebar"></div>
+        </div>
+     ```
+
 # 1.4.2
 
 * Add loadPage factory to load the page from the api

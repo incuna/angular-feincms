@@ -87,28 +87,6 @@
         
     }]);
 
-    pages.directive('feincmsPageRegion', ['$location', 'loadPage', function ($location, loadPage) {
-        return {
-            restrict: 'A',
-            scope: {
-                region: '@',
-                slug: '@'
-            },
-            replace: true,
-            templateUrl: 'templates/feincms/pages/region.html',
-            link: function (scope, element, attrs) {
-                if (angular.isUndefined(scope.slug)) {
-                    scope.slug = $location.$$path;
-                    // Remove the first and last / from the path.
-                    scope.slug = scope.slug.replace(/^\/+|\/+$/g, '');
-                }
-                loadPage(scope.slug).then(function (response) {
-                    scope.content = response.regions[scope.region];
-                });
-            }
-        };
-    }]);
-
     pages.run(['$templateCache', function ($templateCache) {
         $templateCache.put('templates/feincms/pages/detail.html',
             '<div>{{ response|json }}</div>'
