@@ -1,7 +1,7 @@
 # Upcoming
 
 * Upgrade Angular compatibility to include 1.3, 1.4 and 1.5.
-* Upgrade djangular-rest-framework compatibility to include 1.3, 1.4 and 1.5.
+* Upgrade djangular-rest-framework compatibility to include 2, 3 and 4.
 
 # 2.0.0
 

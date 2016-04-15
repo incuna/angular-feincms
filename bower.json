@@ -20,6 +20,6 @@
   ],
   "dependencies": {
     "angular-route": "1.2 - 1.5",
-    "djangular-rest-framework": "1.2 - 1.5"
+    "djangular-rest-framework": "1.2 - 4"
   }
 }
