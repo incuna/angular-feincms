@@ -1,3 +1,8 @@
+# Upcoming
+
+* Upgrade Angular compatibility to include 1.3, 1.4 and 1.5.
+* Upgrade djangular-rest-framework compatibility to include 1.3, 1.4 and 1.5.
+
 # 2.0.0
 
 * Remove feincmsPageRegion directive. Use feincmsPage to load all page data in a single request.
