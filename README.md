@@ -6,8 +6,8 @@ angular-feincms
 
 Example:
 ```
- <div feincms-page="'page-slug'" >
-    <div bind-html-compile="page.regions.main"></div>
-    <div bind-html-compile="page.regions.sidebar"></div>
+ <div feincms-page="'pageSlug'">
+    <div bind-html-compile="feincmsPages.pageSlug.regions.main"></div>
+    <div bind-html-compile="feincmsPages.pageSlug.regions.sidebar"></div>
 </div>
 ```
