@@ -74,11 +74,12 @@
             restrict: 'A',
             scope: false,
             link: function (scope, element, attrs) {
+                scope.feincmsPages = {};
                 scope.$watch(attrs.feincmsPage, function (field) {
                     var slug = scope.$eval(attrs.feincmsPage);
                     if (angular.isDefined(slug)) {
                         loadPage(slug).then(function (response) {
-                            scope.page = response;
+                            scope.feincmsPages[slug] = response;
                         });
                     }
                 });
