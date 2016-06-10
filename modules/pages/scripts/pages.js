@@ -72,14 +72,14 @@
     pages.directive('feincmsPage', ['loadPage', function (loadPage) {
         return {
             restrict: 'A',
-            scope: false,
+            scope: true,
             link: function (scope, element, attrs) {
                 scope.feincmsPages = {};
                 scope.$watch(attrs.feincmsPage, function (field) {
                     var slug = scope.$eval(attrs.feincmsPage);
                     if (angular.isDefined(slug)) {
                         loadPage(slug).then(function (response) {
-                            scope.feincmsPages[slug] = response;
+                            scope.page = response;
                         });
                     }
                 });
