@@ -1,3 +1,7 @@
+### Upcoming
+
+* Upgrade djangular-rest-framework compatibility to include 5
+
 # 4.0.0
 * Breaking change: `feincmsPage` directive changed to `scope: true` prototypical inheritance. Remove the `feincmsPages` scope variable and restore the `page` scope variable. The `page` variable will no longer be available outside the directive's scope so the directive can be used multiple times in a single scope.
 
