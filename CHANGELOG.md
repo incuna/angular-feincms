@@ -1,3 +1,7 @@
+# Upcoming
+
+* Breaking change: Split the code up into several files.
+
 ## 4.1.0
 
 * Upgrade djangular-rest-framework compatibility to include 5
