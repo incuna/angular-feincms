@@ -1,6 +1,8 @@
 # Upcoming
 
 * Breaking change: Split the code up into several files.
+* Add file linting using eslint version 18.1.0. https://github.com/sindresorhus/grunt-eslint.
+* Add build task to create a minified file and a concatenated file.
 
 ## 4.1.0
 
