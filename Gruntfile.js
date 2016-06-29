@@ -1,4 +1,3 @@
-
 'use strict';
 
 var _ = require('lodash');
@@ -113,28 +112,14 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('default', [
+        'build',
         'lint'
     ]);
 
-    grunt.registerTask('travis', 'Run the tests in Travis', [
-        'lint'
-    ]);
-
-    grunt.registerTask('build', 'Concat and uglify', [
+    grunt.registerTask('build', [
         'ngtemplates',
         'concat',
         'uglify'
     ]);
-
-    // This is used in combination with grunt-force-task to make the most of a
-    // Travis build, so all tasks can run but the build will fail if any of the
-    // tasks failed/errored.
-    grunt.registerTask('errorcodes', 'Fatally error if any errors or warnings have occurred but Grunt has been forced to continue', function () {
-        grunt.log.writeln('errorcount: ' + grunt.fail.errorcount);
-        grunt.log.writeln('warncount: ' + grunt.fail.warncount);
-        if (grunt.fail.warncount > 0 || grunt.fail.errorcount > 0) {
-            grunt.fatal('Errors have occurred.');
-        }
-    });
 
 };
