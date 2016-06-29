@@ -41,7 +41,7 @@
             scope: true,
             link: function (scope, element, attrs) {
                 scope.feincmsPages = {};
-                scope.$watch(attrs.feincmsPage, function (field) {
+                scope.$watch(attrs.feincmsPage, function () {
                     var slug = scope.$eval(attrs.feincmsPage);
                     if (angular.isDefined(slug)) {
                         loadPage(slug).then(function (response) {
@@ -149,18 +149,16 @@
 
 }(window.angular));
 
-(function () {
-    'use strict';
+angular.module('pages').run(['$templateCache', function($templateCache) {
+  'use strict';
 
-    var module = angular.module('feincms-pages.templates', []);
+  $templateCache.put('templates/feincms/pages/detail.html',
+    "<div>{{ response|json }}</div>"
+  );
 
-    module.run(['$templateCache', function ($templateCache) {
-        $templateCache.put('templates/feincms/pages/detail.html',
-            '<div>{{ response|json }}</div>'
-        );
-        $templateCache.put('templates/feincms/pages/region.html',
-            '<div ng-bind-html=content></div>'
-        );
-    }]);
 
-}());
+  $templateCache.put('templates/feincms/pages/region.html',
+    "<div ng-bind-html=content></div>"
+  );
+
+}]);

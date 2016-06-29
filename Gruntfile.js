@@ -1,97 +1,140 @@
-(function () {
-    'use strict';
 
-    module.exports = function (grunt) {
+'use strict';
 
-        if (grunt.option('help')) {
-            require('load-grunt-tasks')(grunt);
-        } else {
-            require('jit-grunt')(grunt, {});
+var _ = require('lodash');
+var fs = require('fs');
+
+module.exports = function (grunt) {
+
+    var projectTemplates = {};
+
+    var modules_dir = 'modules/';
+    var modules = fs.readdirSync(modules_dir).filter(function (file) {
+        return fs.statSync(modules_dir + file).isDirectory();
+    });
+
+     _.each(modules, function (name) {
+        projectTemplates[name] = {
+            cwd: 'modules/' + name,
+            src: '**/*.html',
+            dest: 'modules/templates.js'
+        };
+    });
+
+    if (grunt.option('help')) {
+        require('load-grunt-tasks')(grunt);
+    } else {
+        require('jit-grunt')(grunt, {
+            ngtemplates: 'grunt-angular-templates'
+        });
+    }
+
+    require('time-grunt')(grunt);
+
+    var concatConfig = {
+        target: {
+            src: [
+                'modules/**/**/*.js'
+            ],
+            dest: 'dist/angular-feincms-pages.js'
         }
-
-        require('time-grunt')(grunt);
-
-        var concatConfig = {
-            target: {
-                src: [
-                    'modules/**/**/*.js'
-                ],
-                dest: 'dist/angular-feincms-pages.js'
-            }
-        };
-
-        var uglifyConfig = {
-            target: {
-                files: {
-                    'dist/angular-feincms-pages.min.js': 'dist/angular-feincms-pages.js'
-                }
-            }
-        };
-
-        grunt.initConfig({
-            // Configurable paths
-            config: {
-                modules: 'modules',
-                lib: 'bower_components',
-                tests: 'tests',
-                files: {
-                    lint: [
-                        '<%= config.modules %>/**/scripts/**/*.js',
-                        '!<%= config.modules %>/**/templates.js',
-                        'Gruntfile.js'
-                    ]
-                }
-            }
-        });
-
-        grunt.config.merge({
-            eslint: {
-                all: {
-                    options: {
-                        config: '.eslintrc'
-                    },
-                    src: '<%= config.files.lint %>'
-                }
-            },
-            jscs: {
-                options: {
-                    config: '.jscsrc'
-                },
-                src: '<%= config.files.lint %>'
-            },
-            concat: concatConfig,
-            uglify: uglifyConfig
-        });
-
-        grunt.registerTask('lint', [
-            'eslint',
-            'jscs'
-        ]);
-
-        grunt.registerTask('default', [
-            'lint'
-        ]);
-
-        grunt.registerTask('travis', 'Run the tests in Travis', [
-            'lint'
-        ]);
-
-        grunt.registerTask('build', 'Concat and uglify', [
-            'concat',
-            'uglify'
-        ]);
-
-        // This is used in combination with grunt-force-task to make the most of a
-        // Travis build, so all tasks can run but the build will fail if any of the
-        // tasks failed/errored.
-        grunt.registerTask('errorcodes', 'Fatally error if any errors or warnings have occurred but Grunt has been forced to continue', function () {
-            grunt.log.writeln('errorcount: ' + grunt.fail.errorcount);
-            grunt.log.writeln('warncount: ' + grunt.fail.warncount);
-            if (grunt.fail.warncount > 0 || grunt.fail.errorcount > 0) {
-                grunt.fatal('Errors have occurred.');
-            }
-        });
-
     };
 
-}());
+    var uglifyConfig = {
+        target: {
+            files: {
+                'dist/angular-feincms-pages.min.js': 'dist/angular-feincms-pages.js'
+            }
+        }
+    };
+
+    grunt.initConfig({
+        // Configurable paths
+        config: {
+            modules: 'modules',
+            lib: 'bower_components',
+            tests: 'tests',
+            files: {
+                lint: [
+                    '<%= config.modules %>/**/scripts/**/*.js',
+                    '!<%= config.modules %>/**/templates.js',
+                    'Gruntfile.js'
+                ],
+                templatesJS: 'modules/**/templates.js',
+                templatesHTML: 'modules/**/*.html'
+            }
+        },
+        watch: {
+        templates: {
+                files: 'modules/**/*.html',
+                tasks: 'ngtemplates'
+            },
+            scripts: {
+                files: 'modules/**/scripts/**/*.js',
+                tasks: ['build', 'eslint']
+            }
+        },
+        eslint: {
+            all: {
+                options: {
+                    config: '.eslintrc'
+                },
+                src: '<%= config.files.lint %>'
+            }
+        },
+        jscs: {
+            options: {
+                config: '.jscsrc'
+            },
+            src: '<%= config.files.lint %>'
+        },
+        ngtemplates: _.extend({
+                options: {
+                    htmlmin: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeScriptTypeAttributes: true,
+                        removeStyleLinkTypeAttributes: true
+                    }
+                }
+            },
+            projectTemplates
+        ),
+        concat: concatConfig,
+        uglify: uglifyConfig
+    });
+
+    grunt.registerTask('lint', [
+        'eslint',
+        'jscs'
+    ]);
+
+    grunt.registerTask('default', [
+        'lint'
+    ]);
+
+    grunt.registerTask('travis', 'Run the tests in Travis', [
+        'lint'
+    ]);
+
+    grunt.registerTask('build', 'Concat and uglify', [
+        'ngtemplates',
+        'concat',
+        'uglify'
+    ]);
+
+    // This is used in combination with grunt-force-task to make the most of a
+    // Travis build, so all tasks can run but the build will fail if any of the
+    // tasks failed/errored.
+    grunt.registerTask('errorcodes', 'Fatally error if any errors or warnings have occurred but Grunt has been forced to continue', function () {
+        grunt.log.writeln('errorcount: ' + grunt.fail.errorcount);
+        grunt.log.writeln('warncount: ' + grunt.fail.warncount);
+        if (grunt.fail.warncount > 0 || grunt.fail.errorcount > 0) {
+            grunt.fatal('Errors have occurred.');
+        }
+    });
+
+};

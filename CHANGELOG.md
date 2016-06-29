@@ -3,6 +3,7 @@
 * Breaking change: Split the code up into several files.
 * Add file linting using eslint version 18.1.0. https://github.com/sindresorhus/grunt-eslint.
 * Add build task to create a minified file and a concatenated file.
+* Move templates out of the javascript files and into their own html files.
 
 ## 4.1.0
 
