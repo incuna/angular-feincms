@@ -7,8 +7,7 @@
         'feincms-pages.page-group',
         'feincms-pages.load-page',
         'feincms-pages.constants',
-        'feincms-pages.routes',
-        'feincms-pages.templates'
+        'feincms-pages.routes'
     ]);
 
 }(window.angular));

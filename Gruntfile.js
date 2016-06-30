@@ -12,13 +12,19 @@ module.exports = function (grunt) {
         return fs.statSync(modules_dir + file).isDirectory();
     });
 
-     _.each(modules, function (name) {
+    _.each(modules, function (name) {
+        var module_path = 'epatient.' + name + '.templates';
         projectTemplates[name] = {
             cwd: 'modules/' + name,
             src: '**/*.html',
-            dest: 'modules/templates.js'
+            dest: 'modules/' + name + '/templates.js',
+            options: {
+                module: module_path,
+                standalone: true
+            }
         };
     });
+
 
     if (grunt.option('help')) {
         require('load-grunt-tasks')(grunt);
@@ -109,11 +115,6 @@ module.exports = function (grunt) {
     grunt.registerTask('lint', [
         'eslint',
         'jscs'
-    ]);
-
-    grunt.registerTask('default', [
-        'build',
-        'lint'
     ]);
 
     grunt.registerTask('build', [
