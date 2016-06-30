@@ -72,7 +72,7 @@ module.exports = function (grunt) {
         watch: {
         templates: {
                 files: 'modules/**/*.html',
-                tasks: 'ngtemplates'
+                tasks: ['build', 'eslint']
             },
             scripts: {
                 files: 'modules/**/scripts/**/*.js',
@@ -111,6 +111,11 @@ module.exports = function (grunt) {
         concat: concatConfig,
         uglify: uglifyConfig
     });
+
+    grunt.registerTask('default', [
+        'build',
+        'watch'
+    ]);
 
     grunt.registerTask('lint', [
         'eslint',
