@@ -13,7 +13,7 @@ module.exports = function (grunt) {
     });
 
     _.each(modules, function (name) {
-        var module_path = 'epatient.' + name + '.templates';
+        var module_path = name + '.templates';
         projectTemplates[name] = {
             cwd: 'modules/' + name,
             src: '**/*.html',

@@ -1,4 +1,4 @@
-angular.module('epatient.feincms-pages.templates', []).run(['$templateCache', function($templateCache) {
+angular.module('feincms-pages.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('templates/feincms/pages/detail.html',
