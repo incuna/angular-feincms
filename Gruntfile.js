@@ -1,30 +1,28 @@
-'use strict';
-
-var _ = require('lodash');
-var fs = require('fs');
-
 module.exports = function (grunt) {
+    'use strict';
+
+    var _ = require('lodash');
+    var fs = require('fs');
 
     var projectTemplates = {};
 
-    var modules_dir = 'modules/';
+    var modules_dir = 'modules/'; // eslint-disable-line camelcase
     var modules = fs.readdirSync(modules_dir).filter(function (file) {
-        return fs.statSync(modules_dir + file).isDirectory();
+        return fs.statSync(modules_dir + file).isDirectory(); // eslint-disable-line camelcase
     });
 
     _.each(modules, function (name) {
-        var module_path = name + '.templates';
+        var module_path = name + '.templates'; // eslint-disable-line camelcase
         projectTemplates[name] = {
             cwd: 'modules/' + name,
             src: '**/*.html',
             dest: 'modules/' + name + '/templates.js',
             options: {
-                module: module_path,
+                module: module_path, // eslint-disable-line camelcase
                 standalone: true
             }
         };
     });
-
 
     if (grunt.option('help')) {
         require('load-grunt-tasks')(grunt);
@@ -70,9 +68,9 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-        templates: {
+            templates: {
                 files: 'modules/**/*.html',
-                tasks: ['build', 'eslint']
+                tasks: 'ngtemplates'
             },
             scripts: {
                 files: 'modules/**/scripts/**/*.js',
@@ -126,6 +124,10 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concat',
         'uglify'
+    ]);
+
+    grunt.registerTask('test', [
+        'lint'
     ]);
 
 };

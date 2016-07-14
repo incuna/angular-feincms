@@ -19,7 +19,6 @@ before_script:
     # Install packages. npm install is run by default for node_js language type.
     - npm install -g bower grunt-cli
     - yes no | bower install --verbose
-    - npm install
 
 script:
-    - grunt lint
+    - grunt test

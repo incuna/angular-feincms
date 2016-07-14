@@ -42,7 +42,6 @@
     "disallowSpaceBeforePostfixUnaryOperators": true,
     "requireSpaceBeforeBinaryOperators": true,
     "requireSpaceAfterBinaryOperators": true,
-    "requireCamelCaseOrUpperCaseIdentifiers": true,
     "disallowMultipleLineStrings": true,
     "disallowMultipleLineBreaks": true,
     "disallowMixedSpacesAndTabs": true,

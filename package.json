@@ -19,6 +19,6 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "grunt lint"
+    "test": "grunt test"
   }
 }
