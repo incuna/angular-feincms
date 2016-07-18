@@ -6,19 +6,19 @@ module.exports = function (grunt) {
 
     var projectTemplates = {};
 
-    var modules_dir = 'modules/'; // eslint-disable-line camelcase
-    var modules = fs.readdirSync(modules_dir).filter(function (file) {
-        return fs.statSync(modules_dir + file).isDirectory(); // eslint-disable-line camelcase
+    var modulesDir = 'modules/';
+    var modules = fs.readdirSync(modulesDir).filter(function (file) {
+        return fs.statSync(modulesDir + file).isDirectory();
     });
 
     _.each(modules, function (name) {
-        var module_path = name + '.templates'; // eslint-disable-line camelcase
+        var modulePath = name + '.templates';
         projectTemplates[name] = {
             cwd: 'modules/' + name,
             src: '**/*.html',
             dest: 'modules/' + name + '/templates.js',
             options: {
-                module: module_path, // eslint-disable-line camelcase
+                module: modulePath,
                 standalone: true
             }
         };
